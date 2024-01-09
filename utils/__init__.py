@@ -1,0 +1,1 @@
+from .func_aux import FuncoesAux
