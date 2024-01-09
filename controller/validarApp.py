@@ -51,6 +51,10 @@ class AtivacaoApp:
 
             data_de_hoje = datetime.today().date()
 
+            if not data:
+                self.appAtivo = True
+                return
+
             for k, v in enumerate(data):
                 data_inicio = v[2]
                 data_fim = v[3]

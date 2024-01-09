@@ -7,11 +7,13 @@ class Main:
 
         import sys
         app = QApplication(sys.argv)
-        #tela = TelaLogin()
-        tela = TelaContener("2901885626")
+        tela = TelaLogin()
+        #tela = TelaContener("2901885626")
         tela.show()
         sys.exit(app.exec_())
 
-
 if __name__ == "__main__":
     Main().main()
+
+
+

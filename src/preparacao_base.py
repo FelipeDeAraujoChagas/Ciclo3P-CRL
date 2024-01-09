@@ -158,6 +158,7 @@ class FormatacaoCarteiraPedidos:
                         bd.insert_dados(sql_insert.format(lojista[0], f_lojista, 'Full', lojista[0]))
                     else:
                         bd.insert_dados(sql_insert.format(lojista[0], f_lojista, 'Envvias', lojista[0]))
+
         except Exception as e:
             print(e)
             raise Exception(e)                
@@ -236,12 +237,10 @@ class FormatacaoCarteiraPedidos:
 
                 condicao = df_carteira['StEntregaPedidoMongo'] == ''
                 dados = df_carteira.loc[condicao.fillna(False), ['StEntregaPedidoSite', 'DsSituaçãoAgrupada']].values
-
                 # atualizado depara
                 df_aux: pd.DataFrame = df_carteira.loc[condicao]
                 self.lista_aux = list(zip(df_aux['StEntregaPedidoSite'], df_aux['DsSituaçãoAgrupada']))
                 self.insere_novo_status_pedido(self.lista_aux)
-
                 df_carteira.loc[condicao.fillna(False), ['StEntregaPedidoMongo', 'DsSituacaoEntregaPedidoMongo']] = dados
 
             except Exception as e:
@@ -287,7 +286,6 @@ class FormatacaoCarteiraPedidos:
                 lista_aux = list(zip(df_aux['IdLojista'], df_aux['NmLojista']))
                 self.insere_novo_lojista(lista_aux)
                 dct_lojista = self.dados_depara_lojista()
-
                 # atualiza novamente os lojistas
                 df_carteira['Modelo de Operação'] = df_carteira['IdLojista'].map(dct_lojista)
 
@@ -307,7 +305,6 @@ class FormatacaoCarteiraPedidos:
                 # calculo de sla desconsiderando feriados
                 fnc = FuncoesAux()
                 lista_datas = fnc.definicao_feriados()
-
                 df_carteira['DhPrevisaoEntrega'] = df_carteira['DhPrevisaoEntrega'].replace('-', np.nan)
                 df_carteira['DhPrevisaoEntrega'] = pd.to_datetime(df_carteira['DhPrevisaoEntrega'], format='%d/%m/%Y', errors='coerce')
                 valid_dates = df_carteira['DhPrevisaoEntrega'].notnull()
@@ -326,7 +323,8 @@ class FormatacaoCarteiraPedidos:
                 raise Exception(e)
             
             try:
-                df_carteira.to_csv(path_or_buf='saida_carteira.csv', sep=";",encoding='latin-1', index=False, errors='ignore')
+                df_carteira.to_csv(path_or_buf='saida_carteira.csv', sep=";",
+                                   encoding='latin-1', index=False, errors='ignore')
                 lista_pedidos = list(set(df_carteira['CdEntregaPedidoSite'].astype(str).str.replace(".0","").to_list()))
                 return lista_pedidos
             except Exception as e:

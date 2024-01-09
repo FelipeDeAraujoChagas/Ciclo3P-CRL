@@ -396,6 +396,42 @@ QPushButton:pressed{
               <string>Entrar</string>
              </property>
             </widget>
+            <widget class="QPushButton" name="pushButton_OlhoMagico">
+             <property name="geometry">
+              <rect>
+               <x>310</x>
+               <y>140</y>
+               <width>45</width>
+               <height>32</height>
+              </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton{
+	background-color: rgb(50,50,50);
+	border: 2px solid rgb(60,60,60);
+	border-radius: 5px;
+}
+
+QPushButton:hover{
+	background-color: rgb(70,70,70);
+	border: 2px solid rgb(70,70,70);	
+}
+
+QPushButton:pressed{
+	background-color: rgb(177,209,250);
+	border: 2px solid rgb(177, 185, 249);
+	color: rgb(0, 0, 127);	
+}
+</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../../AreaTeste/testeTelasPython/file_rc.qrc">
+               <normaloff>:/olhoMagico/cil-low-vision.png</normaloff>:/olhoMagico/cil-low-vision.png</iconset>
+             </property>
+            </widget>
            </widget>
           </item>
           <item>

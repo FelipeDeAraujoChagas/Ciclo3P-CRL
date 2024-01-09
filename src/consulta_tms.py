@@ -41,10 +41,11 @@ def dados_consulta_doc(lista_documentos: list = [], max_doc: int = 0):
 def executar_processo_consulta(dados_dict: dict):
     """executa o processo de consulta dos documentos"""
     try:
-        dados: list = dados_consulta_doc(dados_dict['lista_pedidos'], int(dados_dict['max_volumes'])) # type: ignore
+
+        dados: list = dados_consulta_doc(dados_dict['lista_pedidos'], int(dados_dict['max_volumes'])) #type: ignore
         resultados: list = []
 
-        fnc.remover_arquivo(dir_download_temp,'entregas_consulta')
+        fnc.remover_arquivo(dir_download_temp, nome_arquivo='entregas_consulta')
         fnc.remover_pastas(dir_download_temp)
         print('#'*100)
         print(f'Total de Execuções: {len(dados)}')
@@ -59,7 +60,7 @@ def executar_processo_consulta(dados_dict: dict):
             resultados.append(executor.submit(consulta_tms_docs, dado))
 
         # lista o resultado das consultas
-        with open('teste.txt','w') as log:  
+        with open('teste.txt', 'w') as log:
             for resultado in resultados:
                 for dct in resultado.result():
                     if dct != 'volumes':
@@ -76,7 +77,7 @@ def executar_processo_consulta(dados_dict: dict):
         df_tms['N° Pedido'] = df_tms['N° Pedido'].apply(lambda x: re.sub("\\=|\"", "", str(x)) if str(x)[0] == "=" else x)
         retorno_tms: pd.DataFrame = df_tms[['N° Pedido', 'Sigla Unidade Entrega', 'Status', 'Ult. Romaneio', 'Sigla Unidade Atual']]
         retorno_tms = retorno_tms.drop_duplicates('N° Pedido')
-        #         .to_csv(dire, sep=';', encoding='latin-1', index=False)
+        # .to_csv(dire, sep=';', encoding='latin-1', index=False)
         # retorno_tms.to_excel('saida_tms.xlsx')
         return retorno_tms
     except Exception as e:

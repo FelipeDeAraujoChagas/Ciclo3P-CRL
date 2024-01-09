@@ -1,4 +1,4 @@
-from datetime import date, datetime, timedelta
+from datetime import datetime
 import re
 import numpy as np
 import pandas as pd
@@ -7,6 +7,7 @@ from data.data_base_sql import DataBaseSQL
 # from numba import jit
 from workadays import workdays as wd
 from utils.func_aux import FuncoesAux
+
 
 class FormatacaoBaseCiclo:
 
@@ -94,9 +95,9 @@ class FormatacaoBaseCiclo:
                     lojista = lojista.replace('\'', '')
                     localizar = regex.findall(str(lojista).lower())
                     if localizar:
-                        bd.insert_dados(sql_insert.format(lojista,'Full', lojista))
+                        bd.insert_dados(sql_insert.format(lojista, 'Full', lojista))
                     else:
-                        bd.insert_dados(sql_insert.format(lojista,'Envvias', lojista))
+                        bd.insert_dados(sql_insert.format(lojista, 'Envvias', lojista))
         except Exception as e:
             print(e)
             raise Exception(e)
@@ -142,7 +143,6 @@ class FormatacaoBaseCiclo:
                 lista = self.df_base.columns.to_list()
 
             except Exception as e:
-
                 print(e)
                 raise Exception('Erro de formatação')
             
@@ -343,14 +343,12 @@ class FormatacaoBaseCiclo:
                 self.df_base['Modal Corrigido'].fillna('Mallory', inplace=True)
 
                 self.df_base.to_csv(path_or_buf='saida_ciclo.csv', sep=';', index=False, encoding='latin-1')
-
+                self.inserir_tabelaBanco()
             except Exception as e:
-
                 print(e)
                 raise Exception('Erro ao carregar deparas')
 
         except Exception as e:
-
             print(e)
             raise Exception('Erro de formatação')
 
@@ -359,7 +357,7 @@ class FormatacaoBaseCiclo:
 
         try:
 
-            self.df_base:pd.DataFrame = df_base
+            self.df_base: pd.DataFrame = df_base
 
         except Exception as e:
             print(e)
@@ -378,7 +376,7 @@ class FormatacaoBaseCiclo:
             raise Exception('Erro de formatação')   
 
         try:
-            condicao = self.df_base['Últ. Pendência'].str.contains('extravio|avaria|roubo|sinistro',case=False)
+            condicao = self.df_base['Últ. Pendência'].str.contains('extravio|avaria|roubo|sinistro', case=False)
             retorno = ['AVA/EXT/ROU', 'Finalizado', 'AVA/EXT/ROU']
             self.df_base.loc[condicao.fillna(False), ['Análise entregue', 'Resumo', 'Situação']] = retorno
 
@@ -429,7 +427,6 @@ class FormatacaoBaseCiclo:
                 print(e)
                 raise Exception('Erro ao carregar deparas')
 
-
             try:
                 condicao = df_temp['Análise entregue'].isin(['Fiscalização'])
                 retorno = ['Fiscalização liberada', 'Em aberto', 'Fiscalização liberada']
@@ -444,6 +441,7 @@ class FormatacaoBaseCiclo:
                 self.df_base.loc[df_temp.index, 'Resumo'] = df_temp['Resumo']
                 self.df_base.loc[df_temp.index, 'Situação'] = df_temp['Situação']
                 # self.df_base.to_csv('saida_analise.csv', sep=';', encoding='latin-1')
+
             except Exception as e:
                 print(e)
                 raise Exception('Erro ao carregar deparas')
@@ -808,3 +806,11 @@ class FormatacaoBaseCiclo:
     def formatacao_arquivo_final_ciclo(self,  df_base: pd.DataFrame):
         """video(01:08:20)"""
         ...
+
+    def inserir_tabelaBanco(self):
+
+        bancoSqlServe = DataBaseSQL()
+        from sqlalchemy import create_engine
+        engine = create_engine(bancoSqlServe.criar_conexao())
+        nomeDatabela = "Tbl_saida_ciclo"
+        self.df_base.to_sql(nomeDatabela, con=engine, if_exists='append', index=False)

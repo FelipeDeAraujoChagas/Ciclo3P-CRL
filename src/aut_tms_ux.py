@@ -11,13 +11,14 @@ from selenium.webdriver.support.wait import WebDriverWait
 # from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 # from .download_driver import DownloadChromeDirver
-
 from tkinter import messagebox
 import os
 import pyperclip as colar_win
 from utils.func_aux import FuncoesAux
 from data.data_base import Database
 from random import randint
+from PyQt5.QtWidgets import QTextEdit, QApplication
+
 
 class automacao:
     def __init__(self):
@@ -40,10 +41,10 @@ class automacao:
 
 class AutomacaoTmsUX(FuncoesAux):
 
-    def __init__(self, lista: list, pasta_aux: str = '') -> None:
-
+    def __init__(self, lista: list, pasta_aux: str = '', textEdit: QTextEdit = None) -> None:
 
         self.carregar_dados()
+        self.text_edit: QTextEdit = textEdit
         self.lista_pesquisa = lista
         if pasta_aux:
             self.dir_download_temp = pasta_aux
@@ -100,6 +101,7 @@ class AutomacaoTmsUX(FuncoesAux):
             options.add_argument('--disable-gpu')
             options.add_argument('--disable-software-rasterizer')
             options.add_argument('--disable-logging')
+            #options.add_argument('--headless')
             options.binary_location = chrome_exe_path
             if visivel:
                 options.add_argument("--headless")
@@ -117,9 +119,11 @@ class AutomacaoTmsUX(FuncoesAux):
         try:
 
             options = Options()
-            options.add_experimental_option(name='prefs', value={"download.default_directory": self.dir_download_temp,
-                                                     "download.Prompt_for_download": False, 
-                                                     "download.directory_upgrade": True})
+            options.add_experimental_option(name='prefs',
+                                            value={"download.default_directory": self.dir_download_temp,
+                                            "download.Prompt_for_download": False,
+                                            "download.directory_upgrade": True
+                                             })
             # mostra o browser em tempo de execução
             if visivel:
                 options.add_argument("--headless")
@@ -157,20 +161,23 @@ class AutomacaoTmsUX(FuncoesAux):
                         return False
             else:
                 while True:
-                    if not self.valida_elemento(tipo, path): return True
+                    if not self.valida_elemento(tipo, path):
+                        return True
                     time.sleep(2)
                     if time.time() - tempo_inicial > tempo_limite:
                         return False
 
         except Exception as e:
-            messagebox.showerror(title='',message=f'{e}')
+            messagebox.showerror(title='', message=f'{e}')
     
     ################################################################################################################################
     # EXECUÇÃO DO BROWSER
     ################################################################################################################################
 
     def login_usuario(self):
+
         """realiza o login do usuario"""
+
         try:
             id_login = "login"
             id_senha = "senha"
@@ -192,7 +199,9 @@ class AutomacaoTmsUX(FuncoesAux):
             raise Exception('Erro de Login')
 
     def verifica_acesso(self):
+
         """verifica se o acesso foi concluido com sucesso"""
+
         try:
             xpt_erro = '//h4[contains(text(),"Acesso Negado!")]'
 
@@ -201,7 +210,7 @@ class AutomacaoTmsUX(FuncoesAux):
                 return False
             return True
         except Exception as e:
-            messagebox.showerror(title='',message=f'{e}')
+            messagebox.showerror(title='', message=f'{e}')
             raise Exception('Erro ao validar acesso')
 
     def acesso_tela(self, url):
@@ -215,6 +224,7 @@ class AutomacaoTmsUX(FuncoesAux):
             messagebox.showerror(title='', message=f'{e}')
 
     def select_tipo_busca(self, pesquisar_por: str):
+
         """seleciona o tipo de busca para consulta"""
 
         try:
@@ -263,7 +273,9 @@ class AutomacaoTmsUX(FuncoesAux):
             dados_ponto.to_csv(path_or_buf='saida_concatenada.csv', sep=';', encoding='latin-1')
 
             for dado in dados:
-                print(f"{dado['fonte']}: {dado['consulta']} - {dado['descricao']}")
+                msg = f"{dado['fonte']}: {dado['consulta']} - {dado['descricao']}"
+                self.printFrontMessagem(msg)
+                print(msg)
 
         except Exception as e:
 
@@ -274,15 +286,16 @@ class AutomacaoTmsUX(FuncoesAux):
         try:
             pass
         except Exception as e:
-            messagebox.showerror(title='',message= f'{e}')
+            messagebox.showerror(title='', message=f'{e}')
 
     def inserir_valores(self, id: str, texto: str):
 
         """executa a colagem dos dados dentro do campo"""
 
         try:
-
-            logger.success(f'num_lista_{id}')
+            msg = f'num_lista_{id}'
+            self.printFrontMessagem(msg)
+            logger.success(msg)
             id_text_area = 'valorBusca'
             text_area = self.driver.find_element(By.ID, id_text_area)
             colar_win.copy("")
@@ -298,13 +311,16 @@ class AutomacaoTmsUX(FuncoesAux):
         if self.esperar_elemento(By.ID, xpt_barra):
             percentual_antigo = percentual_atual
             contagem = tentativa
+
                 #verifica se percentua da barra de progresso chegou a 100%
 
             try:
 
                 time.sleep(2)
                 percentual = self.driver.find_element(By.XPATH, xpt_progresso).text
-                logger.debug(f'execução {id_pesquisa} em {percentual}')
+                msg = f'execução {id_pesquisa} em {percentual}'
+                self.printFrontMessagem(msg)
+                logger.debug(msg)
 
                 if percentual == '100%':
                     return percentual, contagem
@@ -314,12 +330,16 @@ class AutomacaoTmsUX(FuncoesAux):
 
                     if contagem == 5:
                         percentual = 'erro'
-                        logger.error(f'{id_pesquisa}: Tempo de Carregamento excedido')
+                        msg = f'{id_pesquisa}: Tempo de Carregamento excedido'
+                        self.printFrontMessagem(msg)
+                        logger.error(msg)
 
                     return percentual, contagem
                 
             except Exception as e:
-                logger.error(f'Erro na espera do donwload!!\n{e}')
+                msg = f'Erro na espera do donwload!!\n{e}'
+                logger.error(msg)
+                self.printFrontMessagem(msg)
                 return False
 
     def erro_processamento(self):
@@ -347,7 +367,9 @@ class AutomacaoTmsUX(FuncoesAux):
 
         try:
 
-            logger.debug(f'Total de volumes: {len(lista_doc)}')
+            text = f'Total de volumes: {len(lista_doc)}'
+            self.printFrontMessagem(text)
+            logger.debug(text)
             # sepera em grupos de acordo com a quantidade maxima
             nova_lista: list = []
             contador = 1
@@ -429,7 +451,10 @@ class AutomacaoTmsUX(FuncoesAux):
             while True:
 
                 for pagina in lista_paginas:
-                    logger.info(f'{pagina["consulta"]}: {pagina["status"]}',"#"*10)
+
+                    msg = f'{pagina["consulta"]}: {pagina["status"]}'
+                    self.printFrontMessagem(msg)
+                    logger.info(msg, "#"*10)
 
                     # verifica se ainda existe alguma etapa pendente:
                     if str(pagina['status']) not in lista_log:
@@ -467,14 +492,16 @@ class AutomacaoTmsUX(FuncoesAux):
                     try:
                         self.select_tipo_busca(dados_pagina['pesquisar_por'])
                         self.select_tipo_saida()
-                        self.inserir_valores(dados_pagina['consulta'],dados_pagina['entrega'])
+                        self.inserir_valores(dados_pagina['consulta'], dados_pagina['entrega'])
 
                         # inicia a pesquisa
                         name_pesquisar = '//input[@type="button" and @value="Buscar"]'
                         self.wait.until(EC.element_to_be_clickable((By.XPATH, name_pesquisar))).click()
                         # valida erros
                         if (erro := self.erro_processamento()):
-                            logger.error(f'{dados_pagina["consulta"]}: Erro de processo')
+                            msg = f'{dados_pagina["consulta"]}: Erro de processo'
+                            self.printFrontMessagem(msg)
+                            logger.error(msg)
                             return 'erro_de_execucao', erro, '0%', 1, 3
 
                         return 'aguardando_carregar', '', '0%', 1, 1
@@ -493,7 +520,9 @@ class AutomacaoTmsUX(FuncoesAux):
                         xpt_progresso = '//div[@id="barraProgressoExcel"]/div'
                         # verificação a progressão da barra de carregamento
                         if (erro := self.erro_processamento()):
-                            logger.error(f'{dados_pagina["consulta"]}: {erro}')
+                            msg = f'{dados_pagina["consulta"]}: {erro}'
+                            self.printFrontMessagem(msg)
+                            logger.error(msg)
                             return 'erro_de_execucao', erro, '0%', 1, 3
                         
                         tentativa_exec = dados_pagina['tentativa']
@@ -511,7 +540,9 @@ class AutomacaoTmsUX(FuncoesAux):
                         else:
                             incr_tentativa = tentativa_exec + 1
                             self.driver.refresh()
-                            logger.warning(f'{dados_pagina["consulta"]}: Percentual parado reiniciando... tentativas{dados_pagina["tentativa"]}')
+                            msg = f'{dados_pagina["consulta"]}: Percentual parado reiniciando... tentativas{dados_pagina["tentativa"]}'
+                            self.printFrontMessagem(msg)
+                            logger.warning(msg)
                             return 'inserindo_listagem', '', percentual, 1, incr_tentativa
                     
                     except TimeoutException or NoSuchElementException as e:
@@ -525,9 +556,13 @@ class AutomacaoTmsUX(FuncoesAux):
                         xp_download = 'btDownload'
                         if self.esperar_elemento(By.ID, xp_download):
                             self.wait.until(EC.element_to_be_clickable((By.ID, xp_download))).click()
-                            logger.success(f'{dados_pagina["consulta"]}: realizando impressão!!!')
+                            msg = f'{dados_pagina["consulta"]}: realizando impressão!!!'
+                            self.printFrontMessagem(msg)
+                            logger.success(msg)
                             if (erro := self.erro_processamento()):
-                                logger.error(f'{dados_pagina["consulta"]}: Erro de processo')
+                                msg = f'{dados_pagina["consulta"]}: Erro de processo'
+                                self.printFrontMessagem(msg)
+                                logger.error(msg)
                                 return 'erro_de_execucao', erro, '0%', 1, 3
                             
                         return 'processo_concluido', \
@@ -579,3 +614,7 @@ class AutomacaoTmsUX(FuncoesAux):
         except Exception as e:
             print(e)
 
+    def printFrontMessagem(self,messagem):
+
+        self.text_edit.append(messagem)
+        QApplication.processEvents()

@@ -165,6 +165,9 @@ QPushButton:pressed {
           <property name="text">
            <string>user</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
          </widget>
         </widget>
        </item>
@@ -202,13 +205,13 @@ QPushButton:pressed {
         <widget class="QFrame" name="left_menu">
          <property name="minimumSize">
           <size>
-           <width>60</width>
+           <width>64</width>
            <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>60</width>
+           <width>64</width>
            <height>16777215</height>
           </size>
          </property>
@@ -245,7 +248,7 @@ QPushButton:pressed{
          <widget class="QFrame" name="frame_4">
           <property name="geometry">
            <rect>
-            <x>0</x>
+            <x>2</x>
             <y>40</y>
             <width>60</width>
             <height>45</height>
@@ -287,7 +290,7 @@ QPushButton:pressed{
          <widget class="QFrame" name="frame_5">
           <property name="geometry">
            <rect>
-            <x>0</x>
+            <x>2</x>
             <y>90</y>
             <width>60</width>
             <height>45</height>
@@ -320,8 +323,8 @@ QPushButton:pressed{
          <widget class="QFrame" name="frame_6">
           <property name="geometry">
            <rect>
-            <x>0</x>
-            <y>190</y>
+            <x>2</x>
+            <y>240</y>
             <width>60</width>
             <height>45</height>
            </rect>
@@ -353,7 +356,7 @@ QPushButton:pressed{
          <widget class="QFrame" name="frame_8">
           <property name="geometry">
            <rect>
-            <x>0</x>
+            <x>2</x>
             <y>140</y>
             <width>60</width>
             <height>45</height>
@@ -379,7 +382,40 @@ QPushButton:pressed{
            </property>
            <property name="icon">
             <iconset resource="../../AreaTeste/testeTelasPython/file_contener_rc.qrc">
-             <normaloff>:/folder/cil-folder.png</normaloff>:/folder/cil-folder.png</iconset>
+             <normaloff>:/camadas/cil-layers.png</normaloff>:/camadas/cil-layers.png</iconset>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QFrame" name="frame_9">
+          <property name="geometry">
+           <rect>
+            <x>2</x>
+            <y>190</y>
+            <width>60</width>
+            <height>45</height>
+           </rect>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <widget class="QPushButton" name="pushButton_Tarefa">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>60</width>
+             <height>45</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../../AreaTeste/testeTelasPython/file_contener_rc.qrc">
+             <normaloff>:/fogo/cil-fire.png</normaloff>:/fogo/cil-fire.png</iconset>
            </property>
           </widget>
          </widget>
@@ -418,18 +454,12 @@ color: rgb(200,200,200)
              <item row="0" column="0">
               <widget class="QStackedWidget" name="stackedWidget">
                <property name="styleSheet">
-                <string notr="true">QTableView{
-	background-color: rgb(200, 200, 200);
-	color: rgb(20,20,20)
-	
-}
-
-QLineEdit{
+                <string notr="true">QLineEdit{
 	border: 2px solid rgb(45,45,45);
 	border-radiius: 3px;
 	padding: 15px;
 	background-color: rgb(30,30,30);
-	color: rgb(130,130,130);
+	color: rgb(177,177,177);
 }
 
 QLineEdit:hover{
@@ -438,8 +468,26 @@ QLineEdit:hover{
 
 QLineEdit:focus {
 	border: 2px solid rgb(177, 209, 250);	
+	color: rgb(230,230,230);
+}
+
+QTextEdit{
+	border: 2px solid rgb(45,45,45);
+	border-radiius: 3px;
+	padding: 15px;
+	background-color: rgb(30,30,30);
+	color: rgb(230,230,230);
+}
+
+QTextEdit:hover{
+	border: 2px solid rgb(100, 100, 120);	
+}
+
+QLTextEdit:focus {
+	border: 2px solid rgb(177, 209, 250);	
 	color: rgb(200,200,200);
 }
+
 
 QPushButton{
 	background-color: rgb(52, 59, 72);
@@ -457,17 +505,18 @@ QPushButton:pressed{
 	border: 2px solid rgb(177, 185, 249);
 	color: rgb(0, 0, 127);	
 }
+
 </string>
                </property>
                <property name="currentIndex">
-                <number>1</number>
+                <number>2</number>
                </property>
                <widget class="QWidget" name="page_Home">
                 <widget class="QFrame" name="frame_7">
                  <property name="geometry">
                   <rect>
-                   <x>300</x>
-                   <y>50</y>
+                   <x>330</x>
+                   <y>140</y>
                    <width>301</width>
                    <height>221</height>
                   </rect>
@@ -499,12 +548,50 @@ QPushButton:pressed{
                  </widget>
                 </widget>
                </widget>
+               <widget class="QWidget" name="page_Divisao_Tarefa">
+                <widget class="QTableView" name="tableView">
+                 <property name="geometry">
+                  <rect>
+                   <x>80</x>
+                   <y>90</y>
+                   <width>691</width>
+                   <height>481</height>
+                  </rect>
+                 </property>
+                </widget>
+                <widget class="QPushButton" name="pushButton">
+                 <property name="geometry">
+                  <rect>
+                   <x>820</x>
+                   <y>190</y>
+                   <width>93</width>
+                   <height>28</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>PushButton</string>
+                 </property>
+                </widget>
+                <widget class="QPushButton" name="pushButton_2">
+                 <property name="geometry">
+                  <rect>
+                   <x>820</x>
+                   <y>240</y>
+                   <width>93</width>
+                   <height>28</height>
+                  </rect>
+                 </property>
+                 <property name="text">
+                  <string>PushButton</string>
+                 </property>
+                </widget>
+               </widget>
                <widget class="QWidget" name="page_AreaImput">
                 <widget class="QLineEdit" name="lineEdit_1_tratativa">
                  <property name="geometry">
                   <rect>
                    <x>120</x>
-                   <y>90</y>
+                   <y>50</y>
                    <width>471</width>
                    <height>51</height>
                   </rect>
@@ -523,7 +610,7 @@ QPushButton:pressed{
                  <property name="geometry">
                   <rect>
                    <x>120</x>
-                   <y>190</y>
+                   <y>140</y>
                    <width>471</width>
                    <height>51</height>
                   </rect>
@@ -542,7 +629,7 @@ QPushButton:pressed{
                  <property name="geometry">
                   <rect>
                    <x>120</x>
-                   <y>290</y>
+                   <y>230</y>
                    <width>471</width>
                    <height>51</height>
                   </rect>
@@ -560,23 +647,23 @@ QPushButton:pressed{
                 <widget class="QPushButton" name="pushButton_1_trattv_base">
                  <property name="geometry">
                   <rect>
-                   <x>670</x>
-                   <y>90</y>
+                   <x>660</x>
+                   <y>50</y>
                    <width>121</width>
-                   <height>41</height>
+                   <height>51</height>
                   </rect>
                  </property>
                  <property name="text">
-                  <string>tratativa de Base</string>
+                  <string>Tratativa de Base</string>
                  </property>
                 </widget>
                 <widget class="QPushButton" name="pushButton_2_DataFormatado">
                  <property name="geometry">
                   <rect>
-                   <x>670</x>
-                   <y>200</y>
+                   <x>660</x>
+                   <y>140</y>
                    <width>121</width>
-                   <height>41</height>
+                   <height>51</height>
                   </rect>
                  </property>
                  <property name="text">
@@ -586,10 +673,10 @@ QPushButton:pressed{
                 <widget class="QPushButton" name="pushButton_3_BaseValidacao">
                  <property name="geometry">
                   <rect>
-                   <x>670</x>
-                   <y>290</y>
+                   <x>660</x>
+                   <y>230</y>
                    <width>121</width>
-                   <height>41</height>
+                   <height>51</height>
                   </rect>
                  </property>
                  <property name="text">
@@ -599,8 +686,8 @@ QPushButton:pressed{
                 <widget class="QPushButton" name="pushButton_PlayRotina">
                  <property name="geometry">
                   <rect>
-                   <x>420</x>
-                   <y>530</y>
+                   <x>410</x>
+                   <y>400</y>
                    <width>181</width>
                    <height>41</height>
                   </rect>
@@ -613,7 +700,7 @@ QPushButton:pressed{
                  <property name="geometry">
                   <rect>
                    <x>120</x>
-                   <y>380</y>
+                   <y>320</y>
                    <width>471</width>
                    <height>51</height>
                   </rect>
@@ -631,14 +718,27 @@ QPushButton:pressed{
                 <widget class="QPushButton" name="pushButton_4_Ciclo">
                  <property name="geometry">
                   <rect>
-                   <x>670</x>
-                   <y>380</y>
+                   <x>660</x>
+                   <y>320</y>
                    <width>121</width>
-                   <height>41</height>
+                   <height>51</height>
                   </rect>
                  </property>
                  <property name="text">
                   <string>Base Ciclo</string>
+                 </property>
+                </widget>
+                <widget class="QTextEdit" name="textEdit">
+                 <property name="geometry">
+                  <rect>
+                   <x>100</x>
+                   <y>470</y>
+                   <width>771</width>
+                   <height>171</height>
+                  </rect>
+                 </property>
+                 <property name="readOnly">
+                  <bool>false</bool>
                  </property>
                 </widget>
                </widget>
@@ -648,12 +748,13 @@ QPushButton:pressed{
                   <rect>
                    <x>160</x>
                    <y>110</y>
-                   <width>511</width>
-                   <height>291</height>
+                   <width>471</width>
+                   <height>401</height>
                   </rect>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true"/>
+                  <string notr="true">QHeaderView{color: #2933F4;}
+</string>
                  </property>
                 </widget>
                 <widget class="QPushButton" name="pushButton_consultarUsuario">
@@ -831,8 +932,32 @@ border-radius:5px;</string>
                       <height>20</height>
                      </size>
                     </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton{
+	background-image: url(:/close image/icon_close.png);
+	border-raius: 5px;
+	margin: 0px 0px 0px 0px ;
+	background-position: center;	
+	background-color: rgb(70, 70, 70);
+	background-repeat: no-repeat;
+}
+
+QPushButton:hover{
+	background-color:rgb(40,40,40);
+	color: rgb(200, 200, 200);
+}
+QpushButton:pressed{
+	background-color: rgb(35,35,35);
+	color: rgb(200, 200, 200);
+}
+</string>
+                    </property>
                     <property name="text">
-                     <string>x</string>
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="../../AreaTeste/testeTelasPython/file_contener_rc.qrc">
+                      <normaloff>:/exit/icon_close.png</normaloff>:/exit/icon_close.png</iconset>
                     </property>
                    </widget>
                   </item>
@@ -909,7 +1034,7 @@ border-radius:5px;</string>
      <x>0</x>
      <y>0</y>
      <width>1091</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
